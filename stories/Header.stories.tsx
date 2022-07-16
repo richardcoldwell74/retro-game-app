@@ -1,25 +1,18 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-
-import { Header } from './Header';
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import styled from "styled-components";
+import { Header } from "../components/header/header";
 
 export default {
-  title: 'Example/Header',
   component: Header,
-  parameters: {
-    // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
-    layout: 'fullscreen',
-  },
+  title: "Components/Header",
 } as ComponentMeta<typeof Header>;
 
-const Template: ComponentStory<typeof Header> = (args) => <Header {...args} />;
+const Container = styled.main`
+  position: relative;
+  min-height: calc(100vh - 250px);
+  overflow-x: hidden;
+  /* display: block; */
+  padding: 0 calc(3.5vw + 5px);
+`;
 
-export const LoggedIn = Template.bind({});
-LoggedIn.args = {
-  user: {
-    name: 'Jane Doe',
-  },
-};
-
-export const LoggedOut = Template.bind({});
-LoggedOut.args = {};
+export const SpectrumHeader: ComponentStory<typeof Header> = () => <Header />;
