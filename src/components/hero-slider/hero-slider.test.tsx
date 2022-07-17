@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
-import "../../matchMedia.mock"; // Must be imported before the tested file
-import HeroSlider from "./hero-slider";
+import "../../../matchMedia.mock"; // Must be imported before the tested file
+import HeroSlider from "../hero-slider/hero-slider";
 
 const games = [
   {
