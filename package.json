@@ -13,9 +13,13 @@
   },
   "dependencies": {
     "@types/jest": "^28.1.6",
+    "@types/react-slick": "^0.23.10",
+    "@types/slick-carousel": "^1.6.37",
     "next": "12.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-slick": "^0.29.0",
+    "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
