@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styled from "styled-components";
 
 /* eslint-disable-next-line */
@@ -25,6 +26,7 @@ const Logo = styled.a`
   margin-top: 4px;
   font-size: 0;
   display: inline-block;
+  cursor: pointer;
   img {
     display: block;
     width: 100%;
@@ -35,9 +37,11 @@ const Logo = styled.a`
 export function Header(props: HeaderProps) {
   return (
     <Nav>
-      <Logo>
-        <img src="https://media.graphassets.com/sEW3TFSxTgqLrxBZfyLt" />
-      </Logo>
+      <Link href="/">
+        <Logo>
+          <img src="https://media.graphassets.com/sEW3TFSxTgqLrxBZfyLt" />
+        </Logo>
+      </Link>
     </Nav>
   );
 }
