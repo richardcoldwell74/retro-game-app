@@ -3,25 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Link from "next/link";
-
-type Game = {
-  createdAt: string;
-  id: string;
-  title: string;
-  publisher: string;
-  yearPublished: string;
-  description: string;
-  favourite: boolean;
-  slug: string;
-  tags: string[];
-  heroCarousel: boolean;
-  thumbnail: {
-    url: string;
-  };
-  banner: {
-    url: string;
-  };
-};
+import { Game } from "../../types/game";
 
 const Carousel = styled(Slider)`
   margin-top: 20px;
@@ -114,5 +96,3 @@ export function HeroSlider({ games }: HeroSliderProps) {
     </Carousel>
   );
 }
-
-export default HeroSlider;

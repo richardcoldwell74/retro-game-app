@@ -9,6 +9,13 @@ const StyledText = styled.p`
   color: #fff;
 `;
 
+const Container = styled.main`
+  position: relative;
+  overflow-x: hidden;
+  display: block;
+  top: 72px;
+`;
+
 const query = gql`
   query ($pageSlug: String!) {
     game(where: { slug: $pageSlug }) {
@@ -55,10 +62,10 @@ const GamePage = ({
   game,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <>
+    <Container>
       <HeroBanner imageSrc={game.banner.url} alt="an image" />
       <StyledText>{game.title}</StyledText>
-    </>
+    </Container>
   );
 };
 export default GamePage;

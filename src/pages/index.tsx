@@ -81,7 +81,6 @@ const Home = ({ games }: InferGetStaticPropsType<typeof getStaticProps>) => {
   }, [games]);
   return (
     <>
-      <Header />
       <Container>
         {heroGames && <HeroSlider games={heroGames} />}
 
