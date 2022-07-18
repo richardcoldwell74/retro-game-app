@@ -3,6 +3,7 @@ import { client } from "../api/apolloClient";
 import { gql } from "@apollo/client";
 import { Game } from "../../types/game";
 import styled from "styled-components";
+import HeroBanner from "../../components/hero-banner/hero-banner";
 
 const StyledText = styled.p`
   color: #fff;
@@ -55,6 +56,7 @@ const GamePage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <>
+      <HeroBanner imageSrc={game.banner.url} alt="an image" />
       <StyledText>{game.title}</StyledText>
     </>
   );
