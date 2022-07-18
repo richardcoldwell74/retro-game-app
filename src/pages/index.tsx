@@ -69,14 +69,32 @@ export const getStaticProps: GetStaticProps = async () => {
 
 const Home = ({ games }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [heroGames, setHeroGames] = useState<Game[]>([]);
+  const [arcadeGames, setArcadeGames] = useState<Game[]>([]);
+  const [sportsGames, setSportsGames] = useState<Game[]>([]);
+  const [adventureGames, setAdventureGames] = useState<Game[]>([]);
+  const [platformGames, setPlatformGames] = useState<Game[]>([]);
   useEffect(() => {
-    console.log(games);
     setHeroGames(
       games.filter(
         (game: { heroCarousel: boolean }) => game.heroCarousel === true
       )
     );
-    console.log(heroGames);
+    setArcadeGames(
+      games.filter((game: { tags: string[] }) => game.tags.includes("arcade"))
+    );
+    setSportsGames(
+      games.filter((game: { tags: string[] }) => game.tags.includes("sport"))
+    );
+    setAdventureGames(
+      games.filter((game: { tags: string[] }) =>
+        game.tags.includes("adventure")
+      )
+    );
+    setPlatformGames(
+      games.filter((game: { tags: string[] }) =>
+        game.tags.includes("platformer")
+      )
+    );
   }, [games]);
   return (
     <>
@@ -86,7 +104,13 @@ const Home = ({ games }: InferGetStaticPropsType<typeof getStaticProps>) => {
         {games && (
           <>
             <StyledHeader>Arcade Games</StyledHeader>
-            <GameSectionSlider games={games} />
+            <GameSectionSlider games={arcadeGames} />
+            <StyledHeader>Adventure Games</StyledHeader>
+            <GameSectionSlider games={adventureGames} />
+            <StyledHeader>Sports Games</StyledHeader>
+            <GameSectionSlider games={sportsGames} />
+            <StyledHeader>Platform Games</StyledHeader>
+            <GameSectionSlider games={platformGames} />
           </>
         )}
       </Container>
