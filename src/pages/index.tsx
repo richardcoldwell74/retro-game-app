@@ -1,11 +1,10 @@
 import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
 import styled from "styled-components";
-import Header from "../components/header/header";
 import { Game } from "../types/game";
 import { client } from "./api/apolloClient";
 import { gql } from "@apollo/client";
 import { useEffect, useState } from "react";
-import HeroSlider from "../components/hero-slider/hero-slider";
+import { HeroSlider } from "../components/hero-slider/hero-slider";
 import GameSectionSlider from "../components/game-section-slider/game-section-slider";
 
 const Container = styled.main`
