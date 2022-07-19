@@ -96,3 +96,5 @@ export function HeroSlider({ games }: HeroSliderProps) {
     </Carousel>
   );
 }
+
+export default HeroSlider;

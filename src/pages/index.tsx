@@ -6,6 +6,7 @@ import { gql } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { HeroSlider } from "../components/hero-slider/hero-slider";
 import GameSectionSlider from "../components/game-section-slider/game-section-slider";
+import Heading from "../components/heading/heading";
 
 const Container = styled.main`
   position: relative;
@@ -14,21 +15,6 @@ const Container = styled.main`
   display: block;
   top: 72px;
   padding: 0 calc(3.5vw + 5px);
-`;
-
-const StyledHeader = styled.h4`
-  color: #fff;
-  margin: 0;
-  font-size: 16px;
-  padding-left: 20px;
-  @media (min-width: 768px) {
-    font-size: 24px;
-    padding-left: 30px;
-  }
-  @media (min-width: 1024px) {
-    font-size: 32px;
-    padding-left: 40px;
-  }
 `;
 
 const allGamesQuery = gql`
@@ -103,13 +89,21 @@ const Home = ({ games }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
         {games && (
           <>
-            <StyledHeader>Arcade Games</StyledHeader>
+            <Heading level={2} color={"#fff"}>
+              Arcade Games
+            </Heading>
             <GameSectionSlider games={arcadeGames} />
-            <StyledHeader>Adventure Games</StyledHeader>
+            <Heading level={2} color={"#fff"}>
+              Adventure Games
+            </Heading>
             <GameSectionSlider games={adventureGames} />
-            <StyledHeader>Sports Games</StyledHeader>
+            <Heading level={2} color={"#fff"}>
+              Sports Games
+            </Heading>
             <GameSectionSlider games={sportsGames} />
-            <StyledHeader>Platform Games</StyledHeader>
+            <Heading level={2} color={"#fff"}>
+              Platform Games
+            </Heading>
             <GameSectionSlider games={platformGames} />
           </>
         )}
