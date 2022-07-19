@@ -3,25 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { GameTile } from "../game-tile/game-tile";
-
-type Game = {
-  createdAt: string;
-  id: string;
-  title: string;
-  publisher: string;
-  yearPublished: string;
-  description: string;
-  favourite: boolean;
-  slug: string;
-  tags: string[];
-  heroCarousel: boolean;
-  thumbnail: {
-    url: string;
-  };
-  banner: {
-    url: string;
-  };
-};
+import { Game } from "../../types/game";
 
 const Carousel = styled(Slider)`
   margin-top: 0px;
@@ -50,9 +32,15 @@ const Carousel = styled(Slider)`
   }
   .slick-prev {
     left: -60px;
+    @media (max-width: 1024px) {
+      left: -40px;
+    }
   }
   .slick-next {
     right: -60px;
+    @media (max-width: 1024px) {
+      right: -40px;
+    }
   }
 `;
 
@@ -70,6 +58,31 @@ export function GameSectionSlider({ games }: GameSectionSliderProps) {
     slidesToScroll: 4,
     autoplay: false,
     pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          arrows: false,
+        },
+      },
+    ],
   };
   return (
     <Carousel {...settings}>

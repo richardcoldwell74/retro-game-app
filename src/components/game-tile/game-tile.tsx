@@ -40,6 +40,16 @@ const Container = styled.div`
       border: 4px solid rgba(255, 255, 255, 0.9);
     }
   }
+
+  @media (max-width: 1024px) {
+    width: calc(31vw - 3vw);
+  }
+  @media (max-width: 768px) {
+    width: calc(46vw - 3vw);
+  }
+  @media (max-width: 640px) {
+    width: calc(88vw - 3vw);
+  }
 `;
 
 export interface GameTileProps {
