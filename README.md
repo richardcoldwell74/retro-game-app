@@ -2,13 +2,13 @@
 
 
 ### A Retro Game App made using:-
-**Nextjs**
-**Typesript**
-**Styled-Components**
-**Storybook**
-**GraphQL**
-**Hygraph**
-**React-Slick**
+Nextjs
+Typesript
+Styled-Components
+Storybook
+GraphQL
+Hygraph
+React-Slick
 
 ### Setting Up in Local Environment
 
