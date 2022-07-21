@@ -66,7 +66,7 @@ export function Header() {
     <Nav>
       <Link href="/">
         <Logo>
-          <img src="https://media.graphassets.com/sEW3TFSxTgqLrxBZfyLt" />
+          <img src="https://media.graphassets.com/o9BzNGBZT1iFi9IyRuOM" />
         </Logo>
       </Link>
       <NavLinks>
