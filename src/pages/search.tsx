@@ -87,7 +87,7 @@ const Search = ({ games }: InferGetStaticPropsType<typeof getStaticProps>) => {
   useEffect(() => {
     setFilteredGames(
       games.filter((game: { title: string; tags: string[] }) =>
-        game.title.toLowerCase().includes(searchQuery)
+        game.title.toLowerCase().includes(searchQuery.toLowerCase())
       )
     );
     if (searchQuery === "") {
