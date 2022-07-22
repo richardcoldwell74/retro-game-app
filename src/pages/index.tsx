@@ -53,7 +53,11 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-const Home = ({ games }: InferGetStaticPropsType<typeof getStaticProps>) => {
+type HomePageProps = {
+  games: Game[];
+};
+
+const Home = ({ games }: HomePageProps) => {
   const [heroGames, setHeroGames] = useState<Game[]>([]);
   const [arcadeGames, setArcadeGames] = useState<Game[]>([]);
   const [sportsGames, setSportsGames] = useState<Game[]>([]);

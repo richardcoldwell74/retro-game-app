@@ -64,9 +64,11 @@ export const getServerSideProps: GetServerSideProps = async (pageContext) => {
   };
 };
 
-const GamePage = ({
-  game,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+type GamePageProps = {
+  game: Game;
+};
+
+const GamePage = ({ game }: GamePageProps) => {
   return (
     <Container>
       <HeroBanner imageSrc={game.banner.url} alt="an image" />

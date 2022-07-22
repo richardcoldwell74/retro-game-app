@@ -81,7 +81,11 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-const Search = ({ games }: InferGetStaticPropsType<typeof getStaticProps>) => {
+type SearchPageProps = {
+  games: Game[];
+};
+
+const Search = ({ games }: SearchPageProps) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredGames, setFilteredGames] = useState<Game[]>([]);
   useEffect(() => {
