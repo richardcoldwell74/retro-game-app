@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Nav = styled.nav`
   position: fixed;
@@ -61,6 +62,30 @@ const NavLinkContainer = styled.div`
   }
 `;
 
+function Account() {
+  const { data: session, status } = useSession();
+
+  const loading = status === "loading";
+
+  if (loading) return null;
+
+  return (
+    <>
+      {session ? (
+        <NavLinkContainer onClick={() => signOut()}>
+          <Icon className="bi bi-person-check"></Icon>
+        </NavLinkContainer>
+      ) : (
+        <>
+          <NavLinkContainer onClick={() => signIn()}>
+            <Icon className="bi bi-person"></Icon>
+          </NavLinkContainer>
+        </>
+      )}
+    </>
+  );
+}
+
 export function Header() {
   return (
     <Nav>
@@ -82,6 +107,7 @@ export function Header() {
             <NavLink>SEARCH</NavLink>
           </NavLinkContainer>
         </Link>
+        <Account />
       </NavLinks>
     </Nav>
   );
