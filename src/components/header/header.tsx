@@ -45,7 +45,7 @@ const NavLink = styled.div`
   margin-right: 30px;
   cursor: pointer;
   font-size: 16px;
-  @media (max-width: 640px) {
+  @media (max-width: 1024px) {
     display: none;
   }
 `;
@@ -87,6 +87,7 @@ function Account() {
 }
 
 export function Header() {
+  const { data: session, status } = useSession();
   return (
     <Nav>
       <Link href="/">
@@ -101,6 +102,14 @@ export function Header() {
             <NavLink>HOME</NavLink>
           </NavLinkContainer>
         </Link>
+        {status === "authenticated" && (
+          <Link href="/favourites">
+            <NavLinkContainer>
+              <Icon className="bi bi-star"></Icon>
+              <NavLink>FAVOURITES</NavLink>
+            </NavLinkContainer>
+          </Link>
+        )}
         <Link href="/search">
           <NavLinkContainer>
             <Icon className="bi bi-search"></Icon>
