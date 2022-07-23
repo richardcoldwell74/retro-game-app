@@ -55,10 +55,10 @@ const query = gql`
 `;
 
 const updateFavourites = gql`
-  mutation MyMutation {
+  mutation MyMutation($email: String!) {
     updateNextUser(
       data: { favourites: "testupdate" }
-      where: { email: "rich01@gmail.com" }
+      where: { email: $email }
     ) {
       email
     }
@@ -70,7 +70,7 @@ const ToggleFavourite = async (game: Game, email: string) => {
 
   const gameID = game.id;
 
-  const variables = {};
+  const variables = { email };
 
   const data = await graphQLClient.request(updateFavourites, variables);
 };
