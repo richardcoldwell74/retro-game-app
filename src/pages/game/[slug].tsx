@@ -7,6 +7,11 @@ import Heading from "../../components/heading/heading";
 import Paragraph from "../../components/paragraph/paragraph";
 import { graphQLClient } from "../api/graphQLClient";
 import { useSession } from "next-auth/react";
+import {
+  fetchGame,
+  fetchFavourites,
+  updateFavourites,
+} from "../api/GraphQLQueries";
 
 const Container = styled.main`
   position: relative;
@@ -31,53 +36,6 @@ const FavouriteSelector = styled.div`
   border-radius: 50%;
 `;
 
-const query = gql`
-  query ($pageSlug: String!) {
-    game(where: { slug: $pageSlug }) {
-      createdAt
-      id
-      title
-      publisher
-      yearPublished
-      description
-      favourite
-      slug
-      tags
-      heroCarousel
-      thumbnail {
-        url
-      }
-      banner {
-        url
-      }
-    }
-  }
-`;
-
-const fetchFavourites = gql`
-  query FetchFavourites($email: String!) {
-    nextUser(where: { email: $email }) {
-      email
-      favourites
-    }
-  }
-`;
-
-const updateFavourites = gql`
-  mutation MyMutation($favourites: [String!], $email: String!) {
-    updateNextUser(
-      data: { favourites: $favourites }
-      where: { email: $email }
-    ) {
-      email
-      favourites
-    }
-    publishNextUser(where: { email: $email }) {
-      id
-    }
-  }
-`;
-
 const AddFavourite = async (game: Game, email: string) => {
   const { nextUser } = await graphQLClient.request(fetchFavourites, { email });
   let favourites: string[] = nextUser.favourites;
@@ -95,7 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (pageContext) => {
   const variables = {
     pageSlug,
   };
-  const { game } = await graphQLClient.request(query, variables);
+  const { game } = await graphQLClient.request(fetchGame, variables);
 
   return {
     props: {

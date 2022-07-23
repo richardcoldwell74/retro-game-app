@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import GameTile from "../components/game-tile/game-tile";
 import { graphQLClient } from "./api/graphQLClient";
 import { gql } from "graphql-request";
+import { fetchAllGames } from "./api/GraphQLQueries";
 
 const Container = styled.main`
   position: relative;
@@ -21,31 +22,8 @@ const GameTileContainer = styled.div`
   justify-content: center;
 `;
 
-const allGamesQuery = gql`
-  query {
-    games {
-      createdAt
-      id
-      title
-      publisher
-      yearPublished
-      description
-      favourite
-      slug
-      tags
-      heroCarousel
-      thumbnail {
-        url
-      }
-      banner {
-        url
-      }
-    }
-  }
-`;
-
 export const getStaticProps: GetStaticProps = async () => {
-  const { games } = await graphQLClient.request(allGamesQuery);
+  const { games } = await graphQLClient.request(fetchAllGames);
   return {
     props: {
       games: games,

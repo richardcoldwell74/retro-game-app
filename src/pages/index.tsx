@@ -7,6 +7,7 @@ import GameSectionSlider from "../components/game-section-slider/game-section-sl
 import Heading from "../components/heading/heading";
 import { graphQLClient } from "./api/graphQLClient";
 import { gql } from "graphql-request";
+import { fetchAllGames } from "./api/GraphQLQueries";
 
 const Container = styled.main`
   position: relative;
@@ -17,31 +18,8 @@ const Container = styled.main`
   padding: 0 calc(3.5vw + 5px);
 `;
 
-const allGamesQuery = gql`
-  query {
-    games {
-      createdAt
-      id
-      title
-      publisher
-      yearPublished
-      description
-      favourite
-      slug
-      tags
-      heroCarousel
-      thumbnail {
-        url
-      }
-      banner {
-        url
-      }
-    }
-  }
-`;
-
 export const getStaticProps: GetStaticProps = async () => {
-  const { games } = await graphQLClient.request(allGamesQuery);
+  const { games } = await graphQLClient.request(fetchAllGames);
   return {
     props: {
       games: games,
