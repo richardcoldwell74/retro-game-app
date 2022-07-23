@@ -35,7 +35,7 @@ export default NextAuth({
         email: {
           label: "Email",
           type: "email",
-          placeholder: "jamie@hygraph.com",
+          placeholder: "enter email",
         },
         password: {
           label: "Password",

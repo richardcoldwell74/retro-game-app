@@ -1,10 +1,10 @@
 import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
 import styled from "styled-components";
 import { Game } from "../types/game";
-import { client } from "./api/apolloClient";
-import { gql } from "@apollo/client";
 import { useEffect, useState } from "react";
 import GameTile from "../components/game-tile/game-tile";
+import { graphQLClient } from "./api/graphQLClient";
+import { gql } from "graphql-request";
 
 const Container = styled.main`
   position: relative;
@@ -45,10 +45,7 @@ const allGamesQuery = gql`
 `;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const { data } = await client.query({
-    query: allGamesQuery,
-  });
-  const games: Game[] = data.games;
+  const { games } = await graphQLClient.request(allGamesQuery);
   return {
     props: {
       games: games,

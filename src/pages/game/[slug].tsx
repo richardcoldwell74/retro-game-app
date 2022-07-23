@@ -1,11 +1,12 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { client } from "../api/apolloClient";
 import { gql } from "@apollo/client";
 import { Game } from "../../types/game";
 import styled from "styled-components";
 import HeroBanner from "../../components/hero-banner/hero-banner";
 import Heading from "../../components/heading/heading";
 import Paragraph from "../../components/paragraph/paragraph";
+import { graphQLClient } from "../api/graphQLClient";
+import { useSession } from "next-auth/react";
 
 const Container = styled.main`
   position: relative;
@@ -20,6 +21,14 @@ const ContentContainer = styled.div`
   flex-direction: column;
   align-items: center;
   max-width: 1200px;
+`;
+
+const FavouriteSelector = styled.div`
+  background: #fff;
+  color: #000;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
 `;
 
 const query = gql`
@@ -45,18 +54,34 @@ const query = gql`
   }
 `;
 
+const updateFavourites = gql`
+  mutation MyMutation {
+    updateNextUser(
+      data: { favourites: "testupdate" }
+      where: { email: "rich01@gmail.com" }
+    ) {
+      email
+    }
+  }
+`;
+
+const ToggleFavourite = async (game: Game, email: string) => {
+  console.log("toggle favourite", game.id);
+
+  const gameID = game.id;
+
+  const variables = {};
+
+  const data = await graphQLClient.request(updateFavourites, variables);
+};
+
 export const getServerSideProps: GetServerSideProps = async (pageContext) => {
   const pageSlug = pageContext.query.slug;
-
   const variables = {
     pageSlug,
   };
+  const { game } = await graphQLClient.request(query, variables);
 
-  const { data } = await client.query({
-    query: query,
-    variables: variables,
-  });
-  const game: Game = data.game;
   return {
     props: {
       game: game,
@@ -69,6 +94,7 @@ type GamePageProps = {
 };
 
 const GamePage = ({ game }: GamePageProps) => {
+  const { data: session, status } = useSession();
   return (
     <Container>
       <HeroBanner imageSrc={game.banner.url} alt="an image" />
@@ -77,6 +103,11 @@ const GamePage = ({ game }: GamePageProps) => {
           {game.title}
         </Heading>
         <Paragraph color={"#fff"}>{game.description}</Paragraph>
+        {session && (
+          <FavouriteSelector
+            onClick={() => ToggleFavourite(game, session!.user!.email!)}
+          ></FavouriteSelector>
+        )}
       </ContentContainer>
     </Container>
   );
