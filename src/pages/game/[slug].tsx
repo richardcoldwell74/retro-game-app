@@ -54,24 +54,39 @@ const query = gql`
   }
 `;
 
-const updateFavourites = gql`
-  mutation MyMutation($email: String!) {
-    updateNextUser(
-      data: { favourites: "testupdate" }
-      where: { email: $email }
-    ) {
+const fetchFavourites = gql`
+  query FetchFavourites($email: String!) {
+    nextUser(where: { email: $email }) {
       email
+      favourites
     }
   }
 `;
 
-const ToggleFavourite = async (game: Game, email: string) => {
-  console.log("toggle favourite", game.id);
+const updateFavourites = gql`
+  mutation MyMutation($favourites: [String!], $email: String!) {
+    updateNextUser(
+      data: { favourites: $favourites }
+      where: { email: $email }
+    ) {
+      email
+      favourites
+    }
+    publishNextUser(where: { email: $email }) {
+      id
+    }
+  }
+`;
 
-  const gameID = game.id;
-
-  const variables = { email };
-
+const AddFavourite = async (game: Game, email: string) => {
+  const { nextUser } = await graphQLClient.request(fetchFavourites, { email });
+  let favourites: string[] = nextUser.favourites;
+  favourites.push(game.title);
+  var unique = favourites.filter(function (elem, index, self) {
+    return index === self.indexOf(elem);
+  });
+  favourites = unique;
+  const variables = { favourites, email };
   const data = await graphQLClient.request(updateFavourites, variables);
 };
 
@@ -105,7 +120,7 @@ const GamePage = ({ game }: GamePageProps) => {
         <Paragraph color={"#fff"}>{game.description}</Paragraph>
         {session && (
           <FavouriteSelector
-            onClick={() => ToggleFavourite(game, session!.user!.email!)}
+            onClick={() => AddFavourite(game, session!.user!.email!)}
           ></FavouriteSelector>
         )}
       </ContentContainer>

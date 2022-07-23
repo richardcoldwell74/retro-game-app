@@ -16,3 +16,9 @@ export type Game = {
       url: string;
     };
   };
+
+
+export type  NextUser = {
+  email:string;
+  favourites:string[];
+}
