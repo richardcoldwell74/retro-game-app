@@ -6,6 +6,7 @@ import GameTile from "../components/game-tile/game-tile";
 import { graphQLClient } from "./api/graphQLClient";
 import { fetchAllGames, fetchFavourites } from "./api/GraphQLQueries";
 import { useSession } from "next-auth/react";
+import Paragraph from "../components/paragraph/paragraph";
 
 const Container = styled.main`
   position: relative;
@@ -66,7 +67,7 @@ const Favourites = ({
   return (
     <Container>
       <GameTileContainer>
-        {favouriteGames &&
+        {favouriteGames.length > 0 ? (
           favouriteGames.map((game: Game, i: number) => (
             <GameTile
               key={i}
@@ -74,7 +75,12 @@ const Favourites = ({
               imageSrc={game.thumbnail.url}
               alt={game.title}
             />
-          ))}
+          ))
+        ) : (
+          <Paragraph color="#fff">
+            Select Games as Favourites to see them here
+          </Paragraph>
+        )}
       </GameTileContainer>
     </Container>
   );
