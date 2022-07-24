@@ -12,6 +12,7 @@ import {
   fetchFavourites,
   updateFavourites,
 } from "../api/GraphQLQueries";
+import { useEffect, useState } from "react";
 
 const Container = styled.main`
   position: relative;
@@ -29,31 +30,15 @@ const ContentContainer = styled.div`
 `;
 
 const FavouriteSelector = styled.div`
-  background: #fff;
-  color: #000;
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-const AddFavourite = async (game: Game, email: string) => {
-  const { nextUser } = await graphQLClient.request(fetchFavourites, { email });
-  let favourites: string[] = nextUser.favourites;
-  if (favourites.includes(game.title)) {
-    const index = favourites.indexOf(game.title);
-    if (index > -1) {
-      favourites.splice(index, 1);
-    }
-  } else {
-    favourites.push(game.title);
-    var unique = favourites.filter(function (elem, index, self) {
-      return index === self.indexOf(elem);
-    });
-    favourites = unique;
-  }
-  const variables = { favourites, email };
-  const data = await graphQLClient.request(updateFavourites, variables);
-};
+const Icon = styled.i`
+  color: #fff;
+  font-size: 48px;
+`;
 
 export const getServerSideProps: GetServerSideProps = async (pageContext) => {
   const pageSlug = pageContext.query.slug;
@@ -69,12 +54,53 @@ export const getServerSideProps: GetServerSideProps = async (pageContext) => {
   };
 };
 
+const GetFavourites = async (email: string): Promise<string[]> => {
+  const { nextUser } = await graphQLClient.request(fetchFavourites, { email });
+  const favourites: string[] = nextUser.favourites;
+  return favourites;
+};
+
 type GamePageProps = {
   game: Game;
 };
 
 const GamePage = ({ game }: GamePageProps) => {
   const { data: session, status } = useSession();
+  const [favourite, setFavourite] = useState(false);
+  useEffect(() => {
+    if (session?.user?.email) {
+      GetFavourites(session.user.email).then((favourites) => {
+        if (favourites.includes(game.title)) {
+          setFavourite(true);
+        } else {
+          setFavourite(false);
+        }
+      });
+    }
+  }, [game, favourite]);
+
+  const AddFavourite = async (game: Game, email: string) => {
+    const { nextUser } = await graphQLClient.request(fetchFavourites, {
+      email,
+    });
+    let favourites: string[] = nextUser.favourites;
+    if (favourites.includes(game.title)) {
+      const index = favourites.indexOf(game.title);
+      if (index > -1) {
+        favourites.splice(index, 1);
+      }
+    } else {
+      favourites.push(game.title);
+      var unique = favourites.filter(function (elem, index, self) {
+        return index === self.indexOf(elem);
+      });
+      favourites = unique;
+    }
+    const variables = { favourites, email };
+    const data = await graphQLClient.request(updateFavourites, variables);
+    setFavourite(!favourite);
+  };
+
   return (
     <Container>
       <HeroBanner imageSrc={game.banner.url} alt="an image" />
@@ -86,7 +112,13 @@ const GamePage = ({ game }: GamePageProps) => {
         {session && (
           <FavouriteSelector
             onClick={() => AddFavourite(game, session!.user!.email!)}
-          ></FavouriteSelector>
+          >
+            {favourite ? (
+              <Icon className="bi bi-check-circle-fill"></Icon>
+            ) : (
+              <Icon className="bi bi-x-circle-fill"></Icon>
+            )}
+          </FavouriteSelector>
         )}
       </ContentContainer>
     </Container>
