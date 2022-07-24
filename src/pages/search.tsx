@@ -1,10 +1,9 @@
-import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
+import type { GetStaticProps } from "next";
 import styled from "styled-components";
 import { Game } from "../types/game";
 import { useEffect, useState } from "react";
 import GameTile from "../components/game-tile/game-tile";
 import { graphQLClient } from "./api/graphQLClient";
-import { gql } from "graphql-request";
 import { fetchAllGames } from "./api/GraphQLQueries";
 
 const Container = styled.main`

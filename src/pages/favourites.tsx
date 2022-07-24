@@ -4,8 +4,8 @@ import { Game } from "../types/game";
 import { useEffect, useState } from "react";
 import GameTile from "../components/game-tile/game-tile";
 import { graphQLClient } from "./api/graphQLClient";
-import { gql } from "graphql-request";
-import { fetchAllGames } from "./api/GraphQLQueries";
+import { fetchAllGames, fetchFavourites } from "./api/GraphQLQueries";
+import { useSession } from "next-auth/react";
 
 const Container = styled.main`
   position: relative;
@@ -24,6 +24,7 @@ const GameTileContainer = styled.div`
 
 export const getStaticProps: GetStaticProps = async () => {
   const { games } = await graphQLClient.request(fetchAllGames);
+
   return {
     props: {
       games: games,
@@ -32,27 +33,42 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
+const GetFavourites = async (email: string): Promise<string[]> => {
+  const { nextUser } = await graphQLClient.request(fetchFavourites, { email });
+  const favourites: string[] = nextUser.favourites;
+  return favourites;
+};
+
 const Favourites = ({
   games,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [filteredGames, setFilteredGames] = useState<Game[]>([]);
+  const { data: session, status } = useSession();
+  const [favouriteGameNames, setFavouriteGameNames] = useState<string[]>([]);
+  const [favouriteGames, setFavouriteGames] = useState<Game[]>([]);
   useEffect(() => {
-    setFilteredGames(
-      games.filter((game: { title: string; tags: string[] }) =>
-        game.title.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    );
-    if (searchQuery === "") {
-      setFilteredGames(games);
+    if (session?.user?.email) {
+      GetFavourites(session.user.email).then((favourites) =>
+        setFavouriteGameNames(favourites)
+      );
+    } else {
+      setFavouriteGameNames([]);
     }
-  }, [searchQuery, games]);
+  }, [games]);
 
+  useEffect(() => {
+    setFavouriteGames(
+      games.filter((game: Game) => {
+        return favouriteGameNames.includes(game.title);
+      })
+    );
+  }, [favouriteGameNames]);
+
+  console.log(favouriteGameNames);
   return (
     <Container>
       <GameTileContainer>
-        {filteredGames &&
-          filteredGames.map((game: Game, i: number) => (
+        {favouriteGames &&
+          favouriteGames.map((game: Game, i: number) => (
             <GameTile
               key={i}
               href={"game/" + game.slug}
