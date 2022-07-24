@@ -42,7 +42,7 @@ const GetFavourites = async (email: string): Promise<string[]> => {
 const Favourites = ({
   games,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [favouriteGameNames, setFavouriteGameNames] = useState<string[]>([]);
   const [favouriteGames, setFavouriteGames] = useState<Game[]>([]);
   useEffect(() => {
@@ -63,7 +63,6 @@ const Favourites = ({
     );
   }, [favouriteGameNames]);
 
-  console.log(favouriteGameNames);
   return (
     <Container>
       <GameTileContainer>

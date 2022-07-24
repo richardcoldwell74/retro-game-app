@@ -39,11 +39,18 @@ const FavouriteSelector = styled.div`
 const AddFavourite = async (game: Game, email: string) => {
   const { nextUser } = await graphQLClient.request(fetchFavourites, { email });
   let favourites: string[] = nextUser.favourites;
-  favourites.push(game.title);
-  var unique = favourites.filter(function (elem, index, self) {
-    return index === self.indexOf(elem);
-  });
-  favourites = unique;
+  if (favourites.includes(game.title)) {
+    const index = favourites.indexOf(game.title);
+    if (index > -1) {
+      favourites.splice(index, 1);
+    }
+  } else {
+    favourites.push(game.title);
+    var unique = favourites.filter(function (elem, index, self) {
+      return index === self.indexOf(elem);
+    });
+    favourites = unique;
+  }
   const variables = { favourites, email };
   const data = await graphQLClient.request(updateFavourites, variables);
 };
