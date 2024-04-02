@@ -52,7 +52,7 @@ export interface GameSectionSliderProps {
 export function GameSectionSlider({ games }: GameSectionSliderProps) {
   const settings = {
     dots: false,
-    infinite: false,
+    infinite: true,
     speed: 700,
     slidesToShow: 4,
     slidesToScroll: 4,
