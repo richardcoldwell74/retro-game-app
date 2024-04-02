@@ -116,7 +116,7 @@ export function Header() {
             <NavLink>SEARCH</NavLink>
           </NavLinkContainer>
         </Link>
-        <Account />
+        {/* <Account /> */}
       </NavLinks>
     </Nav>
   );
